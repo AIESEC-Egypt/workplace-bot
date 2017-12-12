@@ -9,7 +9,7 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
 #  ------------------------ Fill this with your page access token! -------------------------------
-PAGE_ACCESS_TOKEN = "DQVJ0RTBva0ZAzUzBzTUVFcU1TRWlRSy1GZAEV3cWRkQUxLNkNNaFF6bGYyanRzMUxfR3FuUVJoNlFuelo5bjQxTkdsMG0wRTR2cE40LXpDRDZAnakFQS3h4TVJuREc5TFdGcUZATVGVLTkFldEZADZAUhILXZAjOFQzbmtxZA3drUDc3a2lFa0x1WUF3OVhEaFU1ZAzEyWFNBUDA0Xzdyb3hmcUl4aWhIRWxnQWxkYzZAadmdpTFVMc1ZAYWHZAYdkc3SWJ0T3dvSXVrZAzdn"
+PAGE_ACCESS_TOKEN = "DQVJ0NnZAvNnBzQngwUlVjX3pwNGltR2RobDFQN29BQl9tY1J1VXJsT1d4cWdqY25PRDVDU2JrbTFuXzhmSEs0eG9WUXNLV1BBeFYzLWxxRmVWTmExQ3dzang4eDJ2VlBURk9lejYwR0dudUtIeDY4eVloSEZAlQWdGT1diVXhEdVd6TFhXdnVGNjh3X0JaY1FVRjlsajgtc2ZA1SllJR2lWWEZAfcXBCc0IyYjlNZAXlYNnBFck9CSjJ4R1I0ZAjJEZAmdjYlRKOTV3"
 VERIFY_TOKEN = "2318934571"
 
 
@@ -19,6 +19,24 @@ def post_facebook_message(fbid, received_message):
         {"messaging_type": "RESPONSE", "recipient": {"id": fbid}, "message": {"text": received_message}})
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
     pprint(status.json())
+
+
+def group_members():
+    group_id = 1004069546398113
+    get_members_url = "https://graph.facebook.com/%s/members?access_token=%s" %(group_id ,PAGE_ACCESS_TOKEN)
+    response = requests.get(get_members_url)
+    pprint(response.json())
+    return response.json()['data']  # List of members {id, name}
+
+def contact_group(group):
+    for member in group:
+        member_id = member['id']
+        post_facebook_message(member_id, "Hi %s"%member['name'])
+
+def initiate_chat(request):
+    members = group_members()
+    contact_group(members)
+    return HttpResponse(content="DONE")
 
 
 # Create your views here.
