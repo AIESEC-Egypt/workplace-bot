@@ -11,7 +11,7 @@ class Member(models.Model):
         ("1", "Busy"),
         ("2", "Available")
     )
-    current_survey_id = models.IntegerField()
+    current_survey_id = models.IntegerField(null=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
 
 

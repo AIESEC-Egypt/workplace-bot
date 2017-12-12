@@ -7,6 +7,7 @@ from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
+from .models import Member
 
 #  ------------------------ Fill this with your page access token! -------------------------------
 PAGE_ACCESS_TOKEN = "DQVJ0NnZAvNnBzQngwUlVjX3pwNGltR2RobDFQN29BQl9tY1J1VXJsT1d4cWdqY25PRDVDU2JrbTFuXzhmSEs0eG9WUXNLV1BBeFYzLWxxRmVWTmExQ3dzang4eDJ2VlBURk9lejYwR0dudUtIeDY4eVloSEZAlQWdGT1diVXhEdVd6TFhXdnVGNjh3X0JaY1FVRjlsajgtc2ZA1SllJR2lWWEZAfcXBCc0IyYjlNZAXlYNnBFck9CSjJ4R1I0ZAjJEZAmdjYlRKOTV3"
@@ -19,7 +20,6 @@ def post_facebook_message(fbid, received_message):
         {"messaging_type": "RESPONSE", "recipient": {"id": fbid}, "message": {"text": received_message}})
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
     pprint(status.json())
-
 
 def group_members():
     group_id = 1004069546398113
@@ -37,6 +37,21 @@ def initiate_chat(request):
     members = group_members()
     contact_group(members)
     return HttpResponse(content="DONE")
+
+
+def save_members(request):
+    group_id = 1004069546398113
+    members = group_members()
+
+    for member in members:
+        try:
+            exists = Member.objects.get(pk=member['id'])
+        except:
+            new_member = Member(pk=member['id'], name=member['name'], status=2)
+            new_member.save()
+
+    return HttpResponse(content="DONE adding users")
+
 
 
 # Create your views here.
