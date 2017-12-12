@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'yomamabot.urls'
+ROOT_URLCONF = 'workplace_bot.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'yomamabot.wsgi.application'
+WSGI_APPLICATION = 'workplace_bot.wsgi.application'
 
 
 # Database
