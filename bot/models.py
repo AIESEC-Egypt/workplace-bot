@@ -12,7 +12,7 @@ class Member(models.Model):
         ("1", "Busy"),
         ("2", "Available")
     )
-    current_question = models.ForeignKey("Question", null=True)
+    current_question = models.ForeignKey("Question", on_delete=models.CASCADE)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
 
 
